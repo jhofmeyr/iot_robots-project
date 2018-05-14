@@ -7,11 +7,11 @@ npm install
 ```
 * Open starter.js in your text editor and write some commands to move Sphero
 
-* TODO: link to docs
+* The SDK docs can be found [here](https://github.com/orbotix/sphero.js).
 
 * TODO: bluetooth connection instructions
 
-* TODO: instructions to run starter.js
+* nstructions to run starter.js
 ```console
 sudo node starter.js
 ```
