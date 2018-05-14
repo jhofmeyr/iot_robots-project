@@ -1,0 +1,23 @@
+{
+  "name": "control_sphero_with_sdk",
+  "version": "1.0.0",
+  "description": "...",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/OfferZen-Make/iot_robots-activity-control_sphero_with_sdk.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/OfferZen-Make/iot_robots-activity-control_sphero_with_sdk/issues"
+  },
+  "homepage": "https://github.com/OfferZen-Make/iot_robots-activity-control_sphero_with_sdk#readme",
+  "dependencies": {
+    "noble": "^1.9.1",
+    "sphero": "^0.9.2"
+  }
+}
