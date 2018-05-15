@@ -1,18 +1,20 @@
 ### Activity: Control Sphero with SDK
 
-* To control Sphero with the Javascript SDK, you need to install the node js packages by running:
+* To control Sphero with the Javascript SDK, you need to install the Node JS packages by running:
 
 ```console
 npm install
 ```
-* Open starter.js in your text editor and write some commands to move Sphero
 
-* The SDK docs can be found [here](https://github.com/orbotix/sphero.js).
+ The SDK docs [can be found here](https://github.com/orbotix/sphero.js).
 
-* TODO: bluetooth connection instructions
+* Connect Sphero to your Pi via Bluetooth.
 
-* nstructions to run starter.js
+* Open run.js in your text editor and add code to move Sphero around
+
+* To run your script, enter the following in the terminal:
+
 ```console
-sudo node starter.js
+sudo node run.js MAC_ADDRESS
 ```
 
