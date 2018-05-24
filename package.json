@@ -1,0 +1,18 @@
+{
+  "name": "artemis",
+  "version": "1.0.0",
+  "description": "",
+  "main": "artemis.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "aws-iot-device-sdk": "^2.2.1",
+    "moment": "^2.22.1",
+    "noble": "^1.9.1",
+    "nodemon": "^1.17.5",
+    "sphero": "^0.9.2"
+  }
+}
