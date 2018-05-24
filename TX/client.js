@@ -17,9 +17,9 @@ var orb = sphero(robotId)
 var awsIot = require('aws-iot-device-sdk')
 
 var device = awsIot.device({
-  keyPath: '/home/pi/internal/sphero-aws-client/aws_certificates/' + robotName + '/private.pem.key',
-  certPath: '/home/pi/internal/sphero-aws-client/aws_certificates/' + robotName + '/certificate.pem.crt',
-  caPath: '/home/pi/internal/sphero-aws-client/aws_certificates/ca.pem',
+  keyPath: 'aws_certificates/' + robotName + '/private.pem.key',
+  certPath: 'aws_certificates/' + robotName + '/certificate.pem.crt',
+  caPath: 'aws_certificates/ca.pem',
   clientId: 'jksdhfdksjfhaspberry_pi-' + robotName,
   host: 'a2yujzh40clf9c.iot.us-east-2.amazonaws.com'
 })
@@ -48,9 +48,9 @@ device.on('message', function(topic, payload) {
 });
 
 var thingShadows = awsIot.thingShadow({
-  keyPath: '/home/pi/internal/sphero-aws-client/aws_certificates/' + robotName + '/private.pem.key',
-  certPath: '/home/pi/internal/sphero-aws-client/aws_certificates/' + robotName + '/certificate.pem.crt',
-  caPath: '/home/pi/internal/sphero-aws-client/aws_certificates/ca.pem',
+  keyPath: 'aws_certificates/' + robotName + '/private.pem.key',
+  certPath: 'aws_certificates/' + robotName + '/certificate.pem.crt',
+  caPath: 'aws_certificates/ca.pem',
   clientId: 'uajksdhakjsdhakssphero-' + robotName,
   host: 'a2yujzh40clf9c.iot.us-east-2.amazonaws.com'
 })
