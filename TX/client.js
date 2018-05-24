@@ -16,7 +16,6 @@ var orb = sphero(robotId)
 
 var awsIot = require('aws-iot-device-sdk')
 
-
 var device = awsIot.device({
   keyPath: '/home/pi/internal/sphero-aws-client/aws_certificates/' + robotName + '/private.pem.key',
   certPath: '/home/pi/internal/sphero-aws-client/aws_certificates/' + robotName + '/certificate.pem.crt',
@@ -48,8 +47,6 @@ device.on('message', function(topic, payload) {
 
 });
 
-
-
 var thingShadows = awsIot.thingShadow({
   keyPath: '/home/pi/internal/sphero-aws-client/aws_certificates/' + robotName + '/private.pem.key',
   certPath: '/home/pi/internal/sphero-aws-client/aws_certificates/' + robotName + '/certificate.pem.crt',
@@ -70,64 +67,59 @@ thingShadows.on('connect', function() {
   })
 })
 
+/** dec2hex
+  * Convert a decimal value into a one-byte hex string (00 - FF)
+	* Adapted from https://stackoverflow.com/a/17106974
+*/
 function dec2hex(i) {
   return (i+0x10000).toString(16).substr(-2).toUpperCase();
 }
 
 function listen() {
-
-	console.log('XXXXXXXXXXXXXXXX')
-//  orb.streamOdometer();
-//  orb.on('odometer', function(data) {
-//    thingShadows.update(robotName, {
-//	  'state': {
-//		'reported': {
-//		  'odometerX': data.xOdometer.value[0],
-//		  'odometerY': data.yOdometer.value[0]
-//	    }
-//	  }
-//	});
- // });
-
+  // Set up streaming the sensors we are interested in:
   orb.streamVelocity();
 	orb.streamAccelerometer();
 
 
-orb.on("accelerometer", function(data) {
-  const ACCEL_MAX = 10000
-  let r = dec2hex(Math.round(Math.abs(data.xAccel.value)/ACCEL_MAX * 255))
-  let g = dec2hex(Math.round(Math.abs(data.yAccel.value)/ACCEL_MAX * 255))
-  let b = dec2hex(Math.round(Math.abs(data.zAccel.value)/ACCEL_MAX * 255))
-//  console.log('#'+r+g+b)
-  let payload = {"action": "color",
-            "color": '#'+r+g+b
-            }
-	
- device.publish('things/Shadow/commands', JSON.stringify(payload))
-  
-})
+	orb.on("accelerometer", function(data) {
+	  const ACCEL_MAX = 10000
+	  let r = dec2hex(Math.round(Math.abs(data.xAccel.value)/ACCEL_MAX * 255))
+	  let g = dec2hex(Math.round(Math.abs(data.yAccel.value)/ACCEL_MAX * 255))
+	  let b = dec2hex(Math.round(Math.abs(data.zAccel.value)/ACCEL_MAX * 255))
+
+	  let payload = {
+			             "action": "color",
+	                 "color": '#' + r + g + b
+	                }
+
+	 device.publish('things/Shadow/commands', JSON.stringify(payload))
+	})
 
 
   orb.on("velocity", function(data) {
-  const V_SCALE = 0.4
+    const V_SCALE = 0.2
     var x = data.xVelocity.value[0];
     var y = data.yVelocity.value[0];
-    var max = Math.max(Math.abs(x), Math.abs(y));
 	  let v = Math.sqrt(x**2 + y**2)
 	  let theta_rad = Math.atan(x/y)
+
 	  console.log('x: ' + x + '  y: ' + y + '  t: ' + theta_rad)
+
 	  let theta_deg = theta_rad * 180 / Math.PI;
+		// Sphero doesn't like negative angles:
 	  if (theta_deg < 0) { theta_deg = 360 + theta_deg; }
-   let payload = {"action": "roll",
-	   "speed": v * V_SCALE,
-	   "direction": theta_deg
-            }
+
+    let payload = {
+			             "action": "roll",
+	                 "speed": v * V_SCALE,
+	                 "direction": theta_deg
+                  }
 	  console.log(payload)
- device.publish('things/Shadow/commands', JSON.stringify(payload))
+    device.publish('things/Shadow/commands', JSON.stringify(payload))
   });
- 
+
   keypress(process.stdin);
-  process.stdin.on("keypress", function(ch, key) { 
+  process.stdin.on("keypress", function(ch, key) {
 	if (key.ctrl && key.name == 'c') { process.stdin.pause(); process.exit(); }
   });
 
