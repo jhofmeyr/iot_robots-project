@@ -9,7 +9,7 @@
 const PubSubInterface = require('./pubsub.js');
 const MobilityDriver  = require('./MobilityDriver.js');
 const ColourController  = require('./ColourController.js');
-const F = "FA:34:A8:E7:D4:A7";
+const F = "FA:34:A8:E7:D4:A7";	// Sphero Mac Address - each device has a label on D/F
 const D = 'F5:77:55:BE:40:A2';
 var stdin = process.openStdin();
 var sphero = -1;	// default
@@ -53,10 +53,9 @@ stdin.addListener("data", function(d) {
  });
 
 startSphero = function() {
-	// Set the sphero type here
 	const macAddress = sphero ===spheroType.leader ? F : D;
 
-	// Create a pubsub interface & give it a callback for 
+	// Create objects to handle the required events - drive the sphero, set colour and pubsub between 2 of them
 	const pubsub = new PubSubInterface(sphero);
 	const mobilityDriver = new MobilityDriver(macAddress);
 	const colorDriver = new ColourController(macAddress);
@@ -89,7 +88,7 @@ startSphero = function() {
 		colorDriver.Init();
 
 		/*
-		 * 	Metrics comes directly from PubSub JSON
+		 * 	Metrics come directly from PubSub JSON
 		 *  Position: (use x, y) -> set value based on quadrants
 		 */
 
@@ -114,7 +113,7 @@ startSphero = function() {
 					colour = 'green';
 				} else {
 					// Quad 4
-					colour = 'orange';
+					colour = 'orange';		// Change this, orange is lame on a sphero
 				}
 			}
 
@@ -124,7 +123,7 @@ startSphero = function() {
 		});
 
 		pubsub.setupManualColorUpdator(message => {
-			// Manually update the colour here
+			// Manually update the colour here - for testing
 			console.log(`CONTROLLER: Setting colour to ${message.colour}`);
 			colorDriver.SetColour(message.colour);
 		});

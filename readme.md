@@ -1,119 +1,79 @@
-# PubSub with JavaScript on AWS
+# Dual Sphero PubSub IoT Application
 
-In this activity, you'll use *JavaScript*, *nodeJS* and the *AWS JavaScript IoT SDK* to subcribe and publish to multiple AWS topics in order to solve a puzzle.
+In this **OfferZen** Make Day, we used 2 sphero robots to implement a PubSub IoT system. 
+One Sphero (the *leader*) was set up to roll around commande by keystrokes, while doing so it published a JSON object containing it's speed and (x, y) position to the AWS Cloud. The second Sphero (*The follower*) was made to change it's colour based on the quadrant position of the first. 
 
-After solving the puzzle, you'll be added to the **PubSub Hall of Fame** and your team will be notified of your great success on Slack :D
+This illustrates how a device's state can be controlled based on another's using AWS's PubSub cloud product. It could be applied to many different IoT applications
 
+------ Project Structure
 
-## Prerequisites
+All the project's file's are in the **src** folder. It consists of a controller - which is the main script that handle's program initialization and flow. This script instantiates the following objects to handle requirements modularly:
 
-The following activities are recommended before attempting this one:
-- [Create a Thing on AWS dashboard]
-- [PubSub via AWS dashboard]
+- **PubSubInterface** - Handles are PubSub events and subscriptions
+- **MobilityDriver** - Fancy name Brandon gave the class that controls driving the leader Sphero and feeding back it's metrics
+- **ColourController** - A super simple class to set the colour of the Sphero
 
+------ Controller
 
-## Getting started
+This is a script that just calls the inits on each class and handles the routing of data. It starts by taking a keyboard input (0 or 1) to initialize either a *leader* or *follower*.
 
-1. Using git, clone this repo onto your local machine, then checkout your own personal branch named after your GitHub username. `git checkout -b makers/myGitHubUsername`
-2. Add the certificates you generated from the prerequisite activity [Create a Thing on AWS Dashboard] to the `certificates` folder in your activity directory, and link to them in `lib/publish.js` and `lib/subscribe.js`
-3. Make sure you have installed *nodeJS* and *npm*
-5. To install the AWS IoT JavaScript SDK, run `npm install` in the activity folder.
-6. In your favorite text editor, open `lib/subscribe.js` and `lib/publish.js` We've added some code to get you started, and you need to write the publish and subscribe code to help you solve the puzzle.
-7. Run your subscribe and publish scripts with `node lib/subscribe.js` and `node lib/publish.js`
+------ PubSub Interface
 
+The PubSubInterface initializes itself based on what type of sphero it's running on (the code actually runs on the Raspberry Pi that connects to the Sphero via Blutooth, but you know what we mean). 
 
-## Messages and Topics
+#### Follower
+##### `initDevice()`
 
-Messages are published in *JSON format*. If you'd like to verify that your message is valid JSON, use *the linter tool*.
+Initializes the device with the correct certs, and registers 3 listeners on that `device` object:
+- onConnect - When fired sets up the device to subscribe to the topics it needs to (based on whether it's a *follower* or *leader*) as stored in the `subTopics` array. 
+- onError - Simply just logs the error, but important to register when this happens (we dodn't have this issue though)
+- onMessage - This is fired every time the a message is posted to the topic the device subscribes to. The `PubSubInterface` class actually passes the message straight to the `handleNewMsg` class to handle this (for modularity). 
 
-It's important to note that other makers may be using the same topics at the same time, so keep an eye on the `answererName` property to verify which messages you receive apply to you.
+Note that optional binding is used - `var self = this` - and is necessary because when the callback's fire, the context is different and the `this` instance object actually refers to the `device` object, not the instance of the `PubSubInterface` class. 
 
-### `makers/challenge/tokens`
+#### Handling message routing
 
-Subscribe to this topic to get an `answerToken`. Tokens are automatically published by MakerBot every 20 seconds and are valid for 10 minutes. You'll use this token when publishing your puzzle answer.
+Message routing is handled simply. After initialization, the `Controller` script will call 2 methods - `setupColorUpdator` and `setupManualColorUpdator` - to register callback functions/event handlers/listeners (what ever you like to call them) to be invoked when the `device` gets a new message. 
 
-**Example message:**
+#### Publishing
 
-    {
-      "answerToken": "abc123",
-      "expiresAt": "2018-04-01T09:30:00.000Z"
-    }
+The publish method is so simple there isn't much to explain. We had a weird thing happen where on unwrapping published JSON strings using `JSON.parse()` the original name of the JSON object was included. E.g:
 
+```javascript
+{
+  messageJSON: {
+    // Here was the actual json
+  }
+}
+```
 
+This could have been because of the call to `stringify` before publishing, maybe remove that. 
 
-### `makers/challenge/clues`
+------ Mobility Driver
 
-Subscribe to this topic to get clues to help you solve the puzzle. Clues are published by MakerBot every 30 seconds. There are 6 clues to the puzzle, but you might not need all of them to figure it out.
+The `MobilityDriver` class initializes a sphero to move based on key commands:
+- <-- as you'd imagine
+- --> as you'd imagine
+- ^   as you'd imagine
+- Down as you'd imagine (couldn't find a text-icon for it)
+- m - go faster / increase speed
+- n - reduce speed (Woah denise!)
+- q - Complete calibration (which it will automatically start)
 
-**Example message:**
+The `MobilityDriver` passes data up to the controller at set intervals using a timer function. 
 
-    {
-      "clueIndex": 3,
-      "clue": "My hobbies include meowing and flying at Mach 1",
-      "totalClues": 5
-    }
+------ Colour Controller
 
+What's life without a bit of mystery? We'll leave this for you to figure out.
 
-### `makers/challenge/answers`
+------ Certificates
 
-Publish to this topic to submit an answer to the puzzle. You'll need to include a valid `answerToken` as well as your answer. It's recommended that you don't subscribe to this channel unless you want to see other maker's answer attempts, which may spoil the puzzle.
+We put the certification in two different folders (as they are named), and the are referenced to init the devices based on whether the given device is the leader or follower. 
 
-**Example message:**
+------ Caveat
 
-    {
-      "name": "Alan Turing",
-      "answerToken": "abc123",
-      "answer": "Cats riding jetpacks"
-    }
+We were messing around at the end of the day with the `MobilityController` class to effectivly build an acceleration based high-pass filter (i.e. collision detection), but didn't quite finish it. None of that code should have made it's way onto this branch, but we're sorry if it did and if it breaks the running of this code. But hey, solving problems is always good, so it's a win win for you. 
 
-
-
-### `makers/challenge/answers/errors`
-
-Subscribe to this topic to get feedback on why your published answer was rejected.
-
-**Example messages:**
-
-    {
-      "answererName": "Alan Turing",
-      "error": "Your message is not valid JSON."
-    }
-
-    {
-      "answererName": "Alan Turing",
-      "error": "Your message is formatted correctly, but your answer is incorrect."
-    }
-
-
-### `makers/challenge/answers/accepted`
-
-Subscribe to this topic to be notified when your answer is accepted as correct.
-
-**Example message:**
-
-    {
-      "answererName": "Alan Turing",
-      "result": "Congratulations, you solved the puzzle!"
-    }
-
-
-## Activity strategy
-
-Since you probably want to see incoming messages all the time, but only publish a message once you've solved the puzzle, the code is split into two files `lib/subscribe.js` and `lib/publish.js`, which means you'll want to run two separate terminal tabs.
-
-In practice, a single script will both publish and subscribe via the same `device` object, so this separation is simply to make the activity easier. Don't forget to restart the node processes after you edit the source files!
-
-
-## Need a hand?
-
-We're here to help! If you get stuck, please ask for help on Make Slack in your team channel and tag a Make Master, @dan or @nic. You can also DM us, but it's more useful to keep comms public so that other team members can benefit too.
-
-You can also `git checkout play` to play with fully working code, but you likely want to try write your own version first :)
-
-
-## Resources and further reading
-- AWS PubSub documentation
-- AWS JavaScript SDK Documentation
-- NodeJS installation instructions
-- JSON guide
+Happy hacking. 
+Peza, Brandon and Jason x
 
