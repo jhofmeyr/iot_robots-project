@@ -5,7 +5,8 @@ One Sphero (the *leader*) was set up to roll around commande by keystrokes, whil
 
 This illustrates how a device's state can be controlled based on another's using AWS's PubSub cloud product. It could be applied to many different IoT applications
 
------- Project Structure
+Project Structure
+------ 
 
 All the project's file's are in the **src** folder. It consists of a controller - which is the main script that handle's program initialization and flow. This script instantiates the following objects to handle requirements modularly:
 
@@ -13,11 +14,13 @@ All the project's file's are in the **src** folder. It consists of a controller 
 - **MobilityDriver** - Fancy name Brandon gave the class that controls driving the leader Sphero and feeding back it's metrics
 - **ColourController** - A super simple class to set the colour of the Sphero
 
------- Controller
+Controller
+------ 
 
 This is a script that just calls the inits on each class and handles the routing of data. It starts by taking a keyboard input (0 or 1) to initialize either a *leader* or *follower*.
 
------- PubSub Interface
+PubSub Interface
+------
 
 The PubSubInterface initializes itself based on what type of sphero it's running on (the code actually runs on the Raspberry Pi that connects to the Sphero via Blutooth, but you know what we mean). 
 
@@ -49,7 +52,8 @@ The publish method is so simple there isn't much to explain. We had a weird thin
 
 This could have been because of the call to `stringify` before publishing, maybe remove that. 
 
------- Mobility Driver
+Mobility Driver
+------ 
 
 The `MobilityDriver` class initializes a sphero to move based on key commands:
 - <-- as you'd imagine
@@ -62,15 +66,18 @@ The `MobilityDriver` class initializes a sphero to move based on key commands:
 
 The `MobilityDriver` passes data up to the controller at set intervals using a timer function. 
 
------- Colour Controller
+Colour Controller
+------ 
 
 What's life without a bit of mystery? We'll leave this for you to figure out.
 
------- Certificates
+Certificates
+------ 
 
 We put the certification in two different folders (as they are named), and the are referenced to init the devices based on whether the given device is the leader or follower. 
 
------- Caveat
+Caveat
+------ 
 
 We were messing around at the end of the day with the `MobilityController` class to effectivly build an acceleration based high-pass filter (i.e. collision detection), but didn't quite finish it. None of that code should have made it's way onto this branch, but we're sorry if it did and if it breaks the running of this code. But hey, solving problems is always good, so it's a win win for you. 
 
