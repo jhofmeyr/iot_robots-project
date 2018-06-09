@@ -3,17 +3,18 @@
 /* eslint no-process-exit: 0 */
 
 var sphero = require('sphero')
-var robotId = 'FD:94:C6:CA:0E:C0'
+var robotId = 'E8:CC:F3:D0:70:C4'
 var orb = sphero(robotId)
-
+var x
+var y
 orb.connect(() => {
   console.log('trying to connect to sphero')
-  orb.color('red').delay(100).then(()=>
-    {
-      return orb.color('purple')
-    })
-  
-
+  // orb.streamOdometer()                                                                                                                             
+  // orb.detectCollisions()
+  // orb.streamImuAngles()
+  orb.color('green').delay(1000)
+  orb.color('black')
+  console.log('orb',orb)
   
   var awsIot = require('aws-iot-device-sdk')
   
@@ -28,6 +29,7 @@ orb.connect(() => {
   
   device.on('connect', function() {
     console.log('Connected to AWS IoT');
+
     device.subscribe('things/' + 'Sonic' + '/commands');
   });
   
@@ -54,12 +56,17 @@ orb.connect(() => {
           var r = 0
           var g = 0
           var b = 0 
-          var ri = 1
+          var d = 0
+          var ri = 5
           var gi = 0
           var bi = 0
+          var di = 15
+          console.log("pre-loop")
+          orb.color("black").delay(10)
           while (i < count) {
-            // orb.color({red : message.red, green : message.green, blue : message.blue}).delay(100)
-            setTimeout(() => {orb.color({red : r, green : g, blue : b})
+            d = (d < 360 - di) ? d+= di : 0;
+            orb.roll(50,d).delay(50)
+              orb.color({red : r, green : g, blue : b}) //.delay(50)
               i++
               r+=ri
               g+=gi
@@ -67,12 +74,13 @@ orb.connect(() => {
               if (r == 255 || r == 0) {ri = -ri;}
               if (g == 255 || g == 0) {gi = -gi;}
               if (b == 255 || b == 0) {bi = -bi;}
-              if (r > 126 && gi == 0) {gi = 1;}
-              if (g > 126 && bi == 0) {bi = 1;}
+              if (r > 126 && gi == 0) {gi = 5;}
+              if (g > 126 && bi == 0) {bi = 5;}
               
-              console.log(i,r,g,b)
-            },100*i)
-          }
+              console.log("count: ", i, "rgb: ",r,g,b,"; rolldir: ",d, "position", x,y)
+            }
+            orb.roll(0,0)
+            orb.color("black")
           break;
         case 'rollin':
           orb.color('CA3D00').delay(100).then(()=>
@@ -118,6 +126,25 @@ orb.connect(() => {
     }
   });
 })
+
+// orb.on('odometer', function(data) {
+//   x = data.xOdometer.value[0]
+//   y = data.yOdometer.value[0]
+//   // console.log('odometer',x,y)
+// })
+
+// orb.on('odometer', function(data) {
+//   x = data.xOdometer.value[0]
+//   y = data.yOdometer.value[0]
+// console.log('odometer',x,y)
+// })
+
+// orb.on('odometer', function(data) {
+//   x = data.xOdometer.value[0]
+//   y = data.yOdometer.value[0]
+// console.log('odometer',x,y)
+// })
+
 
 // device.on('message', function(topic, payload) {
 //   console.log(`message came in on ${topic}`)
