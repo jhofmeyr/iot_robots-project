@@ -1,6 +1,6 @@
 ## IoT-Robots Projects Repo for Makers
 
-Have an interesting idea or looking for inspiration? This is the place to share your code with other Makers or to find ideas for things you can do on a Make Day :)
+Have an interesting idea or looking for inspiration? This is the place to share your code with other Makers or to find ideas for things you can do on a Make Day.
 
 
 ### How it works
@@ -9,7 +9,7 @@ Have an interesting idea or looking for inspiration? This is the place to share 
 
 `$ git checkout branch-name`
 
-To push your code, we suggest using the convention `teams/name1-name2-name3` where the names are your Github handles or your names. It's good to share! :D
+To push your code, we suggest using the convention `teams/name1-name2-name3` where the names are your Github handles or your names. It's good to share!
 
 ### List of Projects
 
