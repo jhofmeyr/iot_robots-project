@@ -15,5 +15,5 @@ To push your code, we suggest using the convention `teams/name1-name2-name3` whe
 
 | Project Description | Branch | Makers |
 | -------------| -------------- | ----------------- |
-| Dual Sphero PubSub: One Sphero (leader) rolls around with keystrokes and then publishes its coordinates to a topic. The other Sphero (follower) changes colour depending on the <i>quadrant</i> of the leader. | branch-name | makers|
-| Description | branch-name | makers|
+| Dual Sphero PubSub: One Sphero (leader) rolls around with keystrokes and then publishes its coordinates to a topic. The other Sphero (follower) changes colour depending on the <i>quadrant</i> of the leader. | peza8-jasohardy007-brandon2255p | peza8, jasohardy007, brandon255p|
+<!-- | Description | branch-name | makers| -->
