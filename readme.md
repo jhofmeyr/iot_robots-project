@@ -24,7 +24,7 @@ To push your code, we suggest using the convention `teams/name1-name2-name3` whe
 
 ### Other Ideas
 
-* Control Sphero with an Amazon Echo
+* Control Sphero with voice - Using DialogFlow from previous course or an Amazon Echo
 * One Sphero mimicks the movement of the other
 * A "Tom and Jerry" game where one (Tom) tries to catch the other (Jerry) :)
 * A competitive PubSub "king of the hill" game
