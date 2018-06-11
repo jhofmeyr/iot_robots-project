@@ -9,20 +9,22 @@ Have an interesting idea or looking for inspiration? This is the place to share 
 
 `$ git checkout branch-name`
 
-To push your code, we suggest using the convention `teams/name1-name2-name3` where the names are your Github handles. It's good to share! :D
+To push your code, we suggest using the convention `teams/name1-name2-name3` where the names are your Github handles or your names. It's good to share! :D
 
 ### List of Projects
 
 | Project Description | Branch | Makers | Make Day |
 | -------------| -------------- | ----------------- | ------ |
+| You shake a Sphero and the harder you shake it the brighter the other one gets | teams/erik-emile-andile | erikbotes, emile-jumo, amkhuma | Quebec |
 | Dual Sphero PubSub: One Sphero (leader) rolls around with keystrokes and then publishes its coordinates to a topic. The other Sphero (follower) changes colour depending on the <i>quadrant</i> of the leader. | teams/peza8-jasohardy007-brandon2255p | peza8, jasohardy007, brandon255p| Quebec |
-|  | teams/cornelia | Echochi, shenine| Sierra |
-|  | teams/geoffrey-nipho | Tango |
-|  | olx-michael-nik | makers| |
-|  | teams/teamH | makers| |
+| <i>Placeholder</i> | teams/cornelia | Echochi, shenine| Sierra |
+| <i>Placeholder</i> | teams/geoffrey-nipho |  | |
+| <i>Placeholder</i> | olx-michael-nik | makers| |
+<!-- |  | teams/teamH | makers| | -->
 
 ### Other Ideas
 
+* Control Sphero with an Amazon Echo
 * One Sphero mimicks the movement of the other
 * A "Tom and Jerry" game where one (Tom) tries to catch the other (Jerry) :)
-* You shake a Sphero and the harder you shake it the brighter the other one gets
+* A competitive PubSub "king of the hill" game
