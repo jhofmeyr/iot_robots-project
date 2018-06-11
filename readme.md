@@ -19,7 +19,7 @@ To push your code, we suggest using the convention `teams/name1-name2-name3` whe
 | Dual Sphero PubSub: One Sphero (leader) rolls around with keystrokes and then publishes its coordinates to a topic. The other Sphero (follower) changes colour depending on the <i>quadrant</i> of the leader. | teams/peza8-jasohardy007-brandon2255p | peza8, jasohardy007, brandon255p| Quebec |
 | Control Sphero in interesting ways via AWS (e.g. Sphero rolls in a circle and changes colour :D ) | teams/cornelia | Echochi, shenine| Sierra |
 | <i>Placeholder</i> | teams/olx-michael-nik | mmsamuel, nikmakan-olx | Sierra |
-| <i>Placeholder</i> | teams/geoffrey-nipho | runningdeveloper, nhlakani | Tango |
+| Controll a bunch of Spheros via AWS IOT if a bunch of teams download this branch you can issue commands to the topic 'makers/controll/all'. Replace the certificates and spheroId. | teams/geoffrey-nipho | runningdeveloper, nhlakani | Tango |
 
 
 
