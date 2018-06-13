@@ -3,31 +3,27 @@ const spheroId = 'F5:77:55:BE:40:A2'
 const awsIot = require('aws-iot-device-sdk');
 
 const device = awsIot.device({
-   keyPath: '/home/pi/make/iot_robots/projects/sphero-cli/certificates/4606d6ca19-private.pem.key',
-  certPath: '/home/pi/make/iot_robots/projects/sphero-cli/certificates/4606d6ca19-certificate.pem.crt',
-    caPath: '/home/pi/make/iot_robots/projects/sphero-cli/certificates/ca-cert.pem',
-  clientId: `team-bully`,
+   keyPath: 'certificates/4606d6ca19-private.pem.key',
+  certPath: 'certificates/4606d6ca19-certificate.pem.crt',
+    caPath: 'certificates/ca-cert.pem',
+  clientId: spheroId,
 			host: 'a2yujzh40clf9c.iot.us-east-2.amazonaws.com'
 });
 
-
 const sphero = require("sphero")
-
 const orb = sphero(spheroId)
-
 const streamData = require("./lib/dataStream")
-//const stdin = process.openStdin()
 
 device.on('connect', () => {
-  console.log('Subscriber client connected to AWS IoT cloud.\n');
-
+  console.log('Hive mind connected.\n');
   device.subscribe('swarm');
-  // TODO subscribe to more topics here
 });
 
 device.on('message', (topic, payload) => {
+	console.log('Borg hive-mind message received\n')
   var message = JSON.parse(payload.toString())
   if (topic == 'swarm') {
+    orb.color(message.color);					
     switch (message.action) {
       case 'roll':
         orb.roll(message.speed, message.direction);
@@ -35,45 +31,38 @@ device.on('message', (topic, payload) => {
       case 'stop':
         orb.roll(0,0);
         break;
-      case 'color':
-        orb.color(message.color)
-				break;
-      case 'drawplus':
-        drawPlus();
+      case 'dance':
+        dance();
 				break;
 			case 'calibrate':
 			    if (message.mode == 'start'){
-
+						orb.startCalibration();
 					} else {
-
+						orb.finishCalibration();
 					}
 					break;
 			default:{
-				orb.setRawMotors({lmode: 0x01, lpower: 255, rmode: 0x01, rpower: 255});
+				crazy();
 			}
     }
   }
-  //{ action: 'roll', speed: 10, direction: 100 }
-  //{ action: 'stop' }
-  //{ action: 'color', color: 'blue' }
-  //console.log('message from ', topic)
-  //console.log('payload: ', payload.toString())
 });
 
  orb.connect(() => {
-  orb.color("red");
-	 
-	console.log("Awaiting swarm command...")
+  orb.color("green");
+	console.log("Orb online...\n")
  })
 
 orb.disconnect(() => {
 
 });
 
-function drawPlus(){
-	orb.color("green").delay(1000).then(() => {
-  return forward1unit();
-}).then(() => {
+function crazy(){
+	orb.setRawMotors({lmode: 0x01, lpower: 255, rmode: 0x01, rpower: 255});
+}
+
+function dance(){
+forward1unit().then(() => {
   return back1unit();
 }).then(() => {
   return left1unit();
@@ -90,25 +79,26 @@ function drawPlus(){
 })
 }
 
-var heading;
 var baseunit = 50;
 function forward1unit(){
-	heading = 0;
+	orb.color("yellow");
+	crazy();
 	return orb.roll(baseunit,0).delay(2000);
 }
 
 function back1unit() {
-	heading = 180;	
+	orb.color("purple");	
 	return orb.roll(baseunit,180).delay(2000)
 }
 
 function left1unit() {
-	heading = 270;
+	orb.color("pink");
+	crazy();
 	return orb.roll(baseunit,270).delay(2000);
 }
 
 function right1unit() {
-	heading = 90;
+	orb.color("blue");
 	return orb.roll(baseunit,90).delay(2000);
 }
 
