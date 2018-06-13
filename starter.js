@@ -34,6 +34,18 @@ device.on('message', (topic, payload) => {
       case 'dance':
         dance();
 				break;
+			case 'popo':
+				spinning = true;
+				flipflop = true;
+				spin(10);
+				break;
+			case 'rasta':
+				spinning = true;
+				rasta(15,'green');
+				break;
+				case '8':
+				figureEight();
+				break;
 			case 'calibrate':
 			    if (message.mode == 'start'){
 						orb.startCalibration();
@@ -60,6 +72,48 @@ orb.disconnect(() => {
 function crazy(){
 	orb.setRawMotors({lmode: 0x01, lpower: 255, rmode: 0x01, rpower: 255});
 }
+
+var spinning;
+var flipflop;
+var spinCount=0;
+function spin(times){
+	spinCount++;
+	if (flipflop)	orb.color('red'); else 	orb.color('blue');
+	flipflop = !flipflop;
+	orb.setRawMotors({lmode: 0x01, lpower: 0, rmode: 0x01, rpower: 180});
+	if (spinning && spinCount < times) setTimeout(() => {spin(times)},2000);
+}
+
+var figureEightFlipFlop=false;
+function figureEight() {
+	if(figureEightFlipFlop){
+		orb.setRawMotors({lmode: 0x01, lpower: 30, rmode: 0x01, rpower: 100});
+	} else {
+		orb.setRawMotors({lmode: 0x01, lpower: 100, rmode: 0x01, rpower: 30});
+	}
+	figureEightFlipFlop = !figureEightFlipFlop;
+	setTimeout(() => {figureEight()},2000);
+}
+
+function rasta(times,rastaColor){
+	spinCount++;
+	switch(rastaColor){
+		case 'green':
+		rastaColor = 'yellow';
+		break;
+		case 'yellow':
+		rastaColor = 'red';
+		break;
+		case 'red':
+		rastaColor = 'green';
+		break;
+	}
+
+	orb.color(rastaColor);
+	orb.setRawMotors({lmode: 0x01, lpower: 0, rmode: 0x01, rpower: spinCount*30});
+	if (spinning && spinCount < times) setTimeout(() => {rasta(times,rastaColor)},2000);
+}
+
 
 function dance(){
 forward1unit().then(() => {
