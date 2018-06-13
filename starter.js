@@ -1,8 +1,6 @@
 #!/usr/bin/env node
-
+const spheroId = 'F5:77:55:BE:40:A2'
 const awsIot = require('aws-iot-device-sdk');
-//const moment = require('moment'); // for DateTime formatting
-const username = 'arn:aws:iot:us-west-2:444146409335:thing/BullyBall' // TODO: replace this
 
 const device = awsIot.device({
    keyPath: '/home/pi/make/iot_robots/projects/sphero-cli/certificates/4606d6ca19-private.pem.key',
@@ -14,7 +12,7 @@ const device = awsIot.device({
 
 
 const sphero = require("sphero")
-const spheroId = 'F5:77:55:BE:40:A2'
+
 const orb = sphero(spheroId)
 
 const streamData = require("./lib/dataStream")
@@ -23,71 +21,49 @@ const streamData = require("./lib/dataStream")
 device.on('connect', () => {
   console.log('Subscriber client connected to AWS IoT cloud.\n');
 
-  device.subscribe('bullyball1');
+  device.subscribe('swarm');
   // TODO subscribe to more topics here
 });
 
 device.on('message', (topic, payload) => {
+  var message = JSON.parse(payload.toString())
+  if (topic == 'swarm') {
+    switch (message.action) {
+      case 'roll':
+        orb.roll(message.speed, message.direction);
+        break;
+      case 'stop':
+        orb.roll(0,0);
+        break;
+      case 'color':
+        orb.color(message.color)
+				break;
+      case 'drawplus':
+        drawPlus();
+				break;
+			case 'calibrate':
+			    if (message.mode == 'start'){
 
-  let message = JSON.parse(payload.toString());
+					} else {
 
-  switch (topic) {
-    case 'bullyball1':
-		 console.log(`Message received on topic "${topic}"\n`);
-		  drawPlus();
-		 break;
-
-		default:
-      console.log(`Message received on topic "${topic}"\n`)
+					}
+					break;
+			default:{
+				orb.setRawMotors({lmode: 0x01, lpower: 255, rmode: 0x01, rpower: 255});
+			}
+    }
   }
+  //{ action: 'roll', speed: 10, direction: 100 }
+  //{ action: 'stop' }
+  //{ action: 'color', color: 'blue' }
+  //console.log('message from ', topic)
+  //console.log('payload: ', payload.toString())
 });
 
-// stdin.addListener("data", function(data) {
-
-// 	let command = "orb." + data.toString().trim()
-
-// 	try {
-// 		let result = eval(command)
-// 		console.log("[EXECUTING]: " + result)
-
-// 	} catch(error) {
-// 		console.log(error)
-// 	}
-// })
-
  orb.connect(() => {
-
-	console.log("connected... waiting for input:")
-
-	// output sphero sensor data
-	// below is in sphero/lib/devices/custom.js
-	orb.on("imuAngles", function(data) {
-		streamData.imuAngles(data)
-	})
-
-	orb.on("odometer", function(data) {
-		streamData.odometer(data)
-	})
-
-	orb.on("gyroscope", function(data) {
-		streamData.gyroscope(data)
-	})
-
-	orb.on("velocity", function(data) {
-		streamData.velocity(data)
-	})
-
-	orb.on("accelOne", function(data) {
-		streamData.accelOne(data)
-	})
-	orb.on("accelerometer", function(data) {
-		streamData.accelerometer(data)
-	})
-	orb.on("motorsBackEmf", function(data) {
-		streamData.motorsBackEmf(data)
-	})
-
-// 	drawPlus();
+  orb.color("red");
+	 
+	console.log("Awaiting swarm command...")
  })
 
 orb.disconnect(() => {
