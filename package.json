@@ -17,6 +17,7 @@
   },
   "homepage": "https://github.com/OfferZen-Make/iot_robots-activity-control_sphero_with_sdk#readme",
   "dependencies": {
+    "aws-iot-device-sdk": "^2.2.1",
     "noble": "^1.9.1",
     "sphero": "^0.9.2"
   }
