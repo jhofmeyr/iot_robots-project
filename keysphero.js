@@ -34,11 +34,8 @@ device.on('connect', () => {
 });
 
 function handle(action) {
-  console.log(action);
   var stop = orb.roll.bind(orb, 0, 0),
   roll = orb.roll.bind(orb, 60);
-
-
 
   if (action === "c") {
     process.stdin.pause();
@@ -80,15 +77,13 @@ device.on('message', (topic, payload) => {
 
   switch (topic) {
 		case '/make/teams/adriaan-devin-jd/sphero':
-    console.log('message', message);
-    if (message.name === name)
-    {
-			handle(message.action);
-    }
-    break;
+    if (message.name === name) {
+        console.log('message', message);
+        handle(message.action);
+      }
+      break;
 
 		default:
-    console.log(`Message received on topic "${topic}"\n`)
     break;
   }
 
@@ -99,14 +94,11 @@ process.stdin.resume();
 
 var keypress = require("keypress");
 function handle_keypress(ch, key) {
-  console.log(key.name);
-
   if (key.name === "c") {
     process.stdin.pause();
     process.exit();
   }
 }
-
 
 keypress(process.stdin);
 process.stdin.on("keypress", handle_keypress);
