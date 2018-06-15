@@ -1,17 +1,19 @@
-"use strict";
+const awsIot = require('aws-iot-device-sdk');
+const moment = require('moment'); // for DateTime formatting
+const username = 'adzeeman'
 
 /* eslint no-use-before-define: 0 */
 /* eslint no-process-exit: 0 */
-
-const moment = require('moment'); // for DateTime formatting
-const username = 'adzeeman'
 
 if (process.argv.length != 3) {
   console.log(`Invalid number of arguments. Usage: ${process.argv[1]} <NAME>`);
   process.exit(1);
 }
 
-sphero = require("sphero");
+const name = process.argv[2];
+
+
+var sphero = require("sphero");
 var spheroId = name;
 var orb = sphero(spheroId);
 
@@ -36,8 +38,11 @@ device.on('connect', () => {
 });
 
 function handle(action) {
+  console.log(action);
   var stop = orb.roll.bind(orb, 0, 0),
       roll = orb.roll.bind(orb, 60);
+
+
 
   if (action === "c") {
     process.stdin.pause();
@@ -73,24 +78,25 @@ function handle(action) {
   }
 }
 
-function listen() {
+	device.on('message', (topic, payload) => {
 
-device.on('message', (topic, payload) => {
+	  let message = JSON.parse(payload.toString());
 
-  let message = JSON.parse(payload.toString());
-
-  switch (topic) {
-    case '/make/teams/adriaan-devin-jd/sphero':
-      console.log('message', message);
-	  handle(message.action);
+	  switch (topic) {
+		case '/make/teams/adriaan-devin-jd/sphero':
+		  console.log('message', message);
+		  if (message.name === name)
+		  {
+			handle(message.action);
+	      }
 		  break;
 
-    default:
-      console.log(`Message received on topic "${topic}"\n`)
-  }
+		default:
+		  console.log(`Message received on topic "${topic}"\n`)
+		  break;
+	  }
 
-  console.log("starting to listen for arrow key presses");
 
-  process.stdin.setRawMode(true);
-  process.stdin.resume();
-}
+	});
+	  process.stdin.setRawMode(true);
+	  process.stdin.resume();

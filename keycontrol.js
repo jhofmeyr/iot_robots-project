@@ -15,17 +15,14 @@ if (process.argv.length != 3) {
   process.exit(1);
 }
 
+const name = process.argv[2];
 
 // make sure you install this first - `npm install keypress`
 var keypress = require("keypress");
 
 
 function handle(ch, key) {
-
-  if (key.ctrl && key.name === "c") {
-    process.stdin.pause();
-    process.exit();
-  }
+	console.log(key.name);
 
   device.publish('/make/teams/adriaan-devin-jd/sphero', JSON.stringify(
 	{
@@ -34,9 +31,14 @@ function handle(ch, key) {
 	}
   ));
 
+  if (key.name === "c") {
+    process.stdin.pause();
+    process.exit();
+  }
+
 }
 
-function listen() {
+//function listen() {
   keypress(process.stdin);
   process.stdin.on("keypress", handle);
 
@@ -44,4 +46,4 @@ function listen() {
 
   process.stdin.setRawMode(true);
   process.stdin.resume();
-}
+//}
