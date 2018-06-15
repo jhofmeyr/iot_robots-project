@@ -2,16 +2,12 @@ const awsIot = require('aws-iot-device-sdk');
 const moment = require('moment'); // for DateTime formatting
 const username = 'adzeeman'
 
-/* eslint no-use-before-define: 0 */
-/* eslint no-process-exit: 0 */
-
 if (process.argv.length != 3) {
   console.log(`Invalid number of arguments. Usage: ${process.argv[1]} <NAME>`);
   process.exit(1);
 }
 
 const name = process.argv[2];
-
 
 var sphero = require("sphero");
 var spheroId = name;
@@ -24,11 +20,11 @@ orb.connect(function () {
 });
 
 const device = awsIot.device({
-   keyPath: 'certificates/Sphero/private.pem.key',
+  keyPath: 'certificates/Sphero/private.pem.key',
   certPath: 'certificates/Sphero/certificate.pem.crt',
-    caPath: 'certificates/Sphero/ca.pem',
+  caPath: 'certificates/Sphero/ca.pem',
   clientId: `${username}-subscribe`,
-      host: 'a2yujzh40clf9c.iot.us-east-2.amazonaws.com'
+  host: 'a2yujzh40clf9c.iot.us-east-2.amazonaws.com'
 });
 
 device.on('connect', () => {
@@ -40,7 +36,7 @@ device.on('connect', () => {
 function handle(action) {
   console.log(action);
   var stop = orb.roll.bind(orb, 0, 0),
-      roll = orb.roll.bind(orb, 60);
+  roll = orb.roll.bind(orb, 60);
 
 
 
@@ -78,25 +74,39 @@ function handle(action) {
   }
 }
 
-	device.on('message', (topic, payload) => {
+device.on('message', (topic, payload) => {
 
-	  let message = JSON.parse(payload.toString());
+  let message = JSON.parse(payload.toString());
 
-	  switch (topic) {
+  switch (topic) {
 		case '/make/teams/adriaan-devin-jd/sphero':
-		  console.log('message', message);
-		  if (message.name === name)
-		  {
+    console.log('message', message);
+    if (message.name === name)
+    {
 			handle(message.action);
-	      }
-		  break;
+    }
+    break;
 
 		default:
-		  console.log(`Message received on topic "${topic}"\n`)
-		  break;
-	  }
+    console.log(`Message received on topic "${topic}"\n`)
+    break;
+  }
 
 
-	});
-	  process.stdin.setRawMode(true);
-	  process.stdin.resume();
+});
+process.stdin.setRawMode(true);
+process.stdin.resume();
+
+var keypress = require("keypress");
+function handle_keypress(ch, key) {
+  console.log(key.name);
+
+  if (key.name === "c") {
+    process.stdin.pause();
+    process.exit();
+  }
+}
+
+
+keypress(process.stdin);
+process.stdin.on("keypress", handle_keypress);
