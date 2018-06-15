@@ -1,31 +1,7 @@
-## IoT-Robots Projects Repo for Makers
+## Description
 
-Have an interesting idea or looking for inspiration? This is the place to share your code with other Makers or to find ideas for things you can do on a Make Day.
+Control a sphero with the IMU of another sphero.
 
+When the pitch or roll of the controller is >10 degrees, publish a move command tp aws iot.
 
-### How it works
-
-<i>To see</i> one of the projects listed below, do:
-
-`$ git checkout branch-name`
-
-To push your code, we suggest using the convention `teams/name1-name2-name3` where the names are your Github handles or your names. It's good to share!
-
-### List of Projects
-
-| Project Description | Branch | Makers | Make Day |
-| -------------| -------------- | ----------------- | ------ |
-| You shake a Sphero and the harder you shake it the brighter the other one gets | teams/erik-emile-andile | erikbotes, emile-jumo, amkhuma | Quebec |
-| Dual Sphero PubSub: One Sphero (leader) rolls around with keystrokes and then publishes its coordinates to a topic. The other Sphero (follower) changes colour depending on the <i>quadrant</i> of the leader. | teams/peza8-jasohardy007-brandon2255p | peza8, jasohardy007, brandon255p| Quebec |
-| Control Sphero in interesting ways via AWS (e.g. Sphero rolls in a circle and changes colour :D ) | teams/cornelia | Echochi, shenine| Sierra |
-| <i>Placeholder</i> | teams/olx-michael-nik | mmsamuel, nikmakan-olx | Sierra |
-| Controll a bunch of Spheros via AWS IOT if a bunch of teams download this branch you can issue commands to the topic 'makers/controll/all'. Replace the certificates and spheroId. | teams/geoffrey-nipho | runningdeveloper, nhlakani | Tango |
-
-
-
-### Other Ideas
-
-* Control Sphero with voice - Using DialogFlow from previous course or an Amazon Echo
-* One Sphero mimicks the movement of the other
-* A "Tom and Jerry" game where one (Tom) tries to catch the other (Jerry) :)
-* A competitive PubSub "king of the hill" game
+The subscriber consumes move messages and moves accordingly.
