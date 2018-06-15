@@ -1,6 +1,6 @@
 
 const awsIot = require('aws-iot-device-sdk');
-const username = 'adzeeman'
+const username = 'kowalski_ctrl'
 
 const device = awsIot.device({
    keyPath: 'certificates/Pi/private.pem.key',
