@@ -18,9 +18,11 @@ To push your code, we suggest using the convention `teams/name1-name2-name3` whe
 | You shake a Sphero and the harder you shake it the brighter the other one gets | teams/erik-emile-andile | erikbotes, emile-jumo, amkhuma | Quebec |
 | Dual Sphero PubSub: One Sphero (leader) rolls around with keystrokes and then publishes its coordinates to a topic. The other Sphero (follower) changes colour depending on the <i>quadrant</i> of the leader. | teams/peza8-jasohardy007-brandon2255p | peza8, jasohardy007, brandon255p| Quebec |
 | Control Sphero in interesting ways via AWS (e.g. Sphero rolls in a circle and changes colour :D ) | teams/cornelia | Echochi, shenine| Sierra |
-| <i>Placeholder</i> | teams/olx-michael-nik | mmsamuel, nikmakan-olx | Sierra |
+| Control the movement of the Sphero using the mouse | teams/olx-michael-nik | mmsamuel, nikmakan-olx | Sierra |
 | Controll a bunch of Spheros via AWS IOT if a bunch of teams download this branch you can issue commands to the topic 'makers/controll/all'. Replace the certificates and spheroId. | teams/geoffrey-nipho | runningdeveloper, nhlakani | Tango |
-
+| Use Sphero as a controller - control a Sphero with the IMU of another Sphero | teams/super-sphero | James, Michael | Yankee |
+| Control Sphero via the Cloud| teams/otto-phillip| Otto, Phillip | Yankee |
+| Live control of Sphero via the Cloud with (some) collision detection | teams/adriaan-devin-jd | Adriaan, Devin, JD | Yankee |
 
 
 ### Other Ideas
