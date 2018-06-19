@@ -1,1 +1,3 @@
-node_modules
+aws_cert.crt
+root_ca.pem
+aws_key.key
