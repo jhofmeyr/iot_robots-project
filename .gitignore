@@ -1,3 +1,9 @@
 aws_cert.crt
 root_ca.pem
 aws_key.key
+00a33a53c0-certificate.pem.crt
+00a33a53c0-private.pem.key
+node_modules
+RootC2.pem
+
+
