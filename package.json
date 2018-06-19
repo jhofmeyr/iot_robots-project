@@ -1,0 +1,24 @@
+{
+  "name": "iot_robots-project",
+  "version": "1.0.0",
+  "description": "Have an interesting idea or looking for inspiration? This is the place to share your code with other Makers or to find ideas for things you can do on a Make Day.",
+  "main": "subscribe2.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/OfferZen-Make/iot_robots-project.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/OfferZen-Make/iot_robots-project/issues"
+  },
+  "homepage": "https://github.com/OfferZen-Make/iot_robots-project#readme",
+  "dependencies": {
+    "aws-iot-device-sdk": "^2.2.1",
+    "moment": "^2.22.2",
+    "sphero": "^0.9.2"
+  }
+}
