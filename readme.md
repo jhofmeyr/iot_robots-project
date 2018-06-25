@@ -23,6 +23,7 @@ To push your code, we suggest using the convention `teams/name1-name2-name3` whe
 | Use Sphero as a controller - control a Sphero with the IMU of another Sphero | teams/super-sphero | James, Michael | Yankee |
 | Control Sphero via the Cloud| teams/otto-phillip| Otto, Phillip | Yankee |
 | Live control of Sphero via the Cloud with (some) collision detection | teams/adriaan-devin-jd | Adriaan, Devin, JD | Yankee |
+| Control a sphero via the cloud using a F310 Gamepad | teams/gustav-james | Gustav, James | Victor |
 
 
 ### Other Ideas
