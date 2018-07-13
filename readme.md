@@ -11,6 +11,25 @@ Have an interesting idea or looking for inspiration? This is the place to share 
 
 To push your code, we suggest using the convention `teams/name1-name2-name3` where the names are your Github handles or your names. It's good to share!
 
+### Connecting Sphero to a mac
+
+* Install the sphero package `npm install sphero --save`
+* Install the noble package `npm install noble --save` _this may have errors, but you can ignore them_
+* Run `sudo node ./node_modules/noble/examples/advertisement-discovery.js` This scans for bluetooth devices and prints out their details. e.g.
+  ```shell
+    peripheral discovered (47c344a073a049019fd590b30b6f208b with address <unknown, unknown>, connectable true, RSSI -69:
+      hello my local name is:
+        SK-2368
+      can I interest you in any of the following advertised services:
+        []
+      here is my manufacturer data:
+        "3530"
+      my TX power level is:
+        -10
+  ```
+  You're looking for devices with local name starting `SK-`, and the id you need is the hash value like
+* Use the peripheral ID (`47c344a073a049019fd590b30b6f208b` above) as your `spheroID` to connect
+
 ### List of Projects
 
 | Project Description | Branch | Makers | Make Day |
