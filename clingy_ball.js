@@ -1,4 +1,5 @@
 var sphero = require("sphero");
+var spheroId = '47c344a073a049019fd590b30b6f208b';
 var orb = sphero(spheroId);
 var xpos, ypos
 var xinit, yinit
