@@ -78,7 +78,7 @@ function handleCommand(message) {
 
 function runAway(target_orb) {
   console.log(`${orb_name}: Run Away!`)
-  distance = Math.random() * 500;
+  distance = 50 + Math.random() * 300;
   direction = Math.random() * 360;
 
   orb.roll(distance, direction, (err, data) => {
