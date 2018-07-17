@@ -1,8 +1,8 @@
 var sphero = require("sphero");
 var spheroId = '9ad1cb74ed8643d0aeb7d9567305cb5a'; // R
 var orb = sphero(spheroId);
-var initCoOrds
-var newCoOrds
+var xinit, yinit
+var xpos, ypos
 
 const awsIot = require('aws-iot-device-sdk');
 const moment = require('moment')
@@ -42,18 +42,18 @@ orb.connect(function() {
     orb.color(orb_name);
   }, 3000);
   orb.streamOdometer();
-  initCoOrds = newCoOrds
+
+  orb.on("odometer", function(data) {
+    setCoOrds(data.xOdometer.value[0], data.yOdometer.value[0])
+  })
+
 });
 
-function getXY() {
-  setTimeout(() => {
-    orb.on("odometer", function(data) {
-      newCoOrds = {
-        x: data.xOdometer.value[0],
-        y: data.yOdometer.value[0]
-      }
-    })
-  }, 100);
+function setCoOrds(x, y) {
+  xpos = x
+  ypos = y
+  xinit = xinit || x
+  yinit = yinit || y
 }
 
 function handleCommand(message) {
@@ -81,47 +81,54 @@ function runAway(target_orb) {
   distance = Math.random() * 500;
   direction = Math.random() * 360;
 
-  setTimeout(() => {
-    orb.roll(distance, direction)
-  }, 3000);
-  publishResponse({
-      action: 'chase_me',
-      args: {
-        target_orb: orb_name,
-        distance: distance,
-        direction: direction
-      }
-    });
+  orb.roll(distance, direction, (err, data) => {
+    if (err) {
+      console.log(err)
+    } else {
+      publishResponse({
+        action: 'chase_me',
+        args: {
+          target_orb: orb_name,
+          distance: distance,
+          direction: direction
+        }
+      });
+    }
+  })
 }
 
 function chaseIsOn(args) {
   console.log(`${orb_name}: Chasing ${args.target_orb}`)
-  setTimeout(() => {
-    orb.roll(args.distance, args.direction)
-  }, 3000);
-  publishResponse({message: `Finished Chasing ${args.target_orb}`})
+  orb.roll(args.distance, args.direction, (err, data) => {
+    if (err){
+      console.log(err)
+    } else {
+      publishResponse({message: `Finished Chasing ${args.target_orb}`})
+    }
+  })
 }
 
 function comeHome () {
   console.log("Come home!")
-  var newCoOrds = getXY()
-  console.log("X: " + newCoOrds.x + " Y: " + newCoOrds.y + " XINIT: " + initCoOrds.x + " YINIT: " + initCoOrds.y)
-  deltaX = newCoOrds.x - initCoOrds.x
-  deltaY = newCoOrds.y - initCoOrds.y
+  console.log("X: " + xpos + " Y: " + ypos + " XINIT: " + xinit + " YINIT: " + yinit)
+  deltaX = xpos - xinit
+  deltaY = ypos - yinit
   let distance = magnitude(deltaX, deltaY)
   let theta
-  if (newCoOrds.y > 0) {
+  if (ypos > 0) {
     theta = 180 + Math.atan(deltaX/deltaY) * 180 / Math.PI
-  } else if (newCoOrds.y < 0) {
+  } else if (ypos < 0) {
     theta = Math.atan(deltaX/deltaY) * 180 / Math.PI
   } else {
 
   }
   console.log("Theta: " + theta)
   console.log("Distance: " + distance)
-  setTimeout(() => {
-    orb.roll(distance, theta)
-  }, 3000)
+  orb.roll(distance, theta, (err, data) => {
+    publishResponse({
+      message: `${orb_name} has returned home!`
+    })
+  })
 }
 
 function magnitude (x, y) {
