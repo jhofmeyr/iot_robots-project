@@ -95,7 +95,7 @@ async function comeHome () {
   }
   console.log("Theta: " + theta)
   console.log("Distance: " + distance)
-  orb.roll(distance, theta)
+  orb.roll(distance / 2, theta)
 }
 
 function delta (x, y) {
