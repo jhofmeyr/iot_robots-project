@@ -42,7 +42,7 @@ To push your code, we suggest using the convention `teams/name1-name2-name3` whe
 | Use Sphero as a controller - control a Sphero with the IMU of another Sphero | teams/super-sphero | James, Michael | Yankee |
 | Control Sphero via the Cloud| teams/otto-phillip| Otto, Phillip | Yankee |
 | Live control of Sphero via the Cloud with (some) collision detection | teams/adriaan-devin-jd | Adriaan, Devin, JD | Yankee |
-
+| AWS Slave - send JSON commands (`{action: "roll", args: "100, 50"}`). Clingy Ball - roll the ball away, and it tries to come back.  AWS Catch - Connect balls, tell one to run away, the others chase. Alexa Lambda - Lambda function to allow Alexa to controll a game of AWS Catch (in theory).  Alexa Test - command line wrapper for Alexa Lambda.  Please excuse the horrible Javascript! | dylan-justin | Dylan and Justin | Foxtrot? |
 
 ### Other Ideas
 
